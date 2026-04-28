@@ -1,0 +1,22 @@
+---
+- name: Install
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: 1. Install Git
+      yum:
+        name: git
+        state: present
+
+    - name: 2. user name
+      git_config:
+        name: user.name
+        scope: global
+        value: "dajeong"
+
+    - name: 3. user email
+      git_config:
+        name: user.email
+        scope: global
+        value: "rush7993@gmail.com"

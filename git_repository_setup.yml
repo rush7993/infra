@@ -1,0 +1,41 @@
+---
+- name: Install
+  hosts: localhost
+  become: no
+  remote_user: user1
+  vars:
+    github_ssh_key: id_ed25519
+  tasks:
+    - name: ssh-agent 실행
+      shell: eval "$(ssh-agent -s)"
+
+    - name: 개인키 등록(조장님 키 필요)
+      shell: ssh-add ~/.ssh/{{github_ssh_key}}
+
+    - name: 연결확인
+      shell: ssh -T git@github.com
+
+    - name: Create README
+      shell: echo "# infra" >> README.md
+
+    - name: Initialize Git
+      shell: git init
+
+    - name: Add README
+      shell: git add README.md
+
+    - name: Commit changes
+      shell: git commit -m "first commit"
+
+    - name: Set branch to main(브런치네임)
+      shell: git branch -M main
+
+    - name: Add remote origin(조장님 ssh)
+      shell: git remote add origin git@github.com:rush7993/infra.git
+      ignore_errors: yes
+
+    - name: Push to origin
+      shell: git push -u origin main
+      args:
+        stdin: yes
+ 
