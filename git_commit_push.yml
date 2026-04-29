@@ -1,0 +1,21 @@
+---
+- name: Install
+  hosts: localhost
+  become: no
+  remote_user: user1
+  vars:
+    comment : "Fix: 수정내용"
+    branch_name : feature/fix
+  tasks:
+   
+   # pr 세팅
+
+    - name: git add & commit
+      shell: git add . && git commit -m "{{comment}}"
+
+
+    - name: branch(브런치 생성 후 스위치)
+      shell: git push origin "{{branch_name}}"
+
+ 
+ 
