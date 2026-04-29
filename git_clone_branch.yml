@@ -1,0 +1,27 @@
+---
+- name: Install
+  hosts: localhost
+  become: no
+  remote_user: user1
+  vars:
+    branch_name : feature/fix
+  tasks:
+   
+   # pr 세팅
+
+    - name: git clone(조장님 ssh 주소)
+      shell: git clone git@github.com:rush7993/infra.git
+      ignore_errors: yes
+
+    - name: branch(브런치 생성 후 스위치)
+      shell: git branch {{branch_name}} && git switch {{branch_name}}
+
+    - name: git branch
+      shell: git branch
+      register: gb
+
+    - name: debug
+      debug:
+        msg: "{{gb.stdout}}"
+ 
+ 
